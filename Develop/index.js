@@ -31,8 +31,39 @@ const questions = [
     },
 ];
 
+const questions2 = [
+    {
+        type: "input",
+        message: "Provide instructions and examples for use.",
+        name: "usage"
+    },
+    {
+        type: "input",
+        message: "What licenses are used for this project?",
+        name: "license"
+    },
+    {
+        type: "input",
+        message: "Include any tests for this application and how to run them.",
+        name: "tests"
+    },
+    {
+        type: "input",
+        message: "What is your contact email address?",
+        name: "email"
+    }
+];
+
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+const writeToFile = (fileName, data) => {
+    fs.writeFile(fileName, data, function(err) {
+        if (err) {
+            return console.log(err);
+        }
+
+        console.log("completed!");
+    })
+}
 
 // TODO: Create a function to initialize app
 function init() {}
