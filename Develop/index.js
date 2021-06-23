@@ -44,11 +44,11 @@ const questions2 = [
         message: "What licenses are used for this project?",
         name: "license"
     },
-    {
-        type: "input",
-        message: "who contributed to the project?",
-        name: "contributing"
-    },
+   // {
+   //     type: "input",
+  //     message: "who contributed to the project?",
+  //      name: "contributing"
+   // },
     {
         type: "input",
         message: "Include any tests for this application and how to run them.",
