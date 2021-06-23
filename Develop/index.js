@@ -2,8 +2,10 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 
+const generateMarkdown = require("./utils/generateMarkdown.js");
+
 // TODO: Create an array of questions for user input
-const questions = [
+const questions1 = [
     {
         type: "input",
         message: "What is your Github username?",
@@ -44,6 +46,11 @@ const questions2 = [
     },
     {
         type: "input",
+        message: "who contributed to the project?",
+        name: "contributing"
+    },
+    {
+        type: "input",
         message: "Include any tests for this application and how to run them.",
         name: "tests"
     },
@@ -77,8 +84,8 @@ let contributing = '';
 // TODO: Create a function to initialize app
 //function init() {}
 async function init() {
-    
-    await inquirer.prompt(questions1).then(async function(response){
+
+    await inquirer.prompt(questions1).then(async function (response) {
         const queryUrl = `https://api.github.com/users/${response.userName}/events/public?per_page=1`;
 
         questionsObject = response;
@@ -87,7 +94,7 @@ async function init() {
 
             // Each time the stepPrompts function is called, the installStepCount is increased by one.
             installStepCount++;
-            
+
             // Theses are the base install questions. The step message is incremented by 1 to let the user known which step they are adding
             const installQuestions = [
                 {
@@ -102,7 +109,7 @@ async function init() {
                 },
             ];
             if (confirmValue) {
-                inquirer.prompt(installQuestions).then(function(response){
+                inquirer.prompt(installQuestions).then(function (response) {
                     // These push each installation step key and value to the questionsObject as well as the installStepsObject(which is used to later append the steps to the markdown)
                     questionsObject[inputName] = response[inputName];
                     installStepsObject[inputName] = response[inputName];
@@ -114,7 +121,7 @@ async function init() {
                     stepPrompts(confirmValue, `step${installStepCount}`, `stepConfirm`);
                 });
             } else {
-                inquirer.prompt(questions2).then(function(response2){
+                inquirer.prompt(questions2).then(function (response2) {
                     // this combines all of the data from the first set of questions and the second set of questions
                     allData = {
                         ...questionsObject,
@@ -127,28 +134,27 @@ async function init() {
 
                     // This gives the user the ability to add the contributor covenant to their readme. It does a fs.readFile to capture the contributorCovenant.md text
                     if (allData.contributing) {
-                        fs.readFile('contributorCovenant.md', 'utf8', function(error, data){
+                        fs.readFile('contributorCovenant.md', 'utf8', function (error, data) {
                             if (error) {
                                 return console.log(error);
                             }
-                            contributing = data;  
+                            contributing = data;
                             writeToFile("README.md", generateMarkdown(allData, install, contributing));
-                        })  
+                        })
                     } else {
                         writeToFile("README.md", generateMarkdown(allData, install, ''));
                     }
-                    
+
                 });
-            }  
+            }
         }
+
         // the response.installation sets 
         stepPrompts(response.installation, `step${installStepCount}`, `stepConfirm`);
 
     });
 
 }
-        
-
 
 // Function call to initialize app
 init();
