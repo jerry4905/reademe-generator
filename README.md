@@ -11,7 +11,7 @@
 * [Questions](#Questions)
   ## Installation 
 * install npm packages
-* run index.js is terminal
+* node index.js in terminal
   ## Usage 
  once the first question appears, enter information and compelte all questions for a descriptive readme.md file.
   ## License 
